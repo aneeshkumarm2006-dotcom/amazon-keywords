@@ -1,10 +1,19 @@
 name: Deploy GitHub Pages
 
+# The published site is the Next.js app in `web/`, built as a static export.
+# GitHub Pages serves this repository as a *project* site, so everything lives
+# under `/ppc-tools-for-va/` — that prefix has to be baked in at build time via
+# NEXT_PUBLIC_BASE_PATH or every asset URL in the export points one directory
+# too high and the site renders as unstyled HTML.
+#
+# The hand-written `site/` folder is still in the repository; it is simply no
+# longer what gets deployed.
+
 on:
   push:
     branches: [main]
     paths:
-      - "site/**"
+      - "web/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -13,9 +22,13 @@ permissions:
   pages: write
   id-token: write
 
+# Queued runs still collapse to the latest one, but an in-flight run is left
+# alone: cancelling `deploy-pages` after the deployment has been created but
+# before it completes leaves the github-pages environment holding an
+# in-progress deployment, which the next run then fails on.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -23,14 +36,40 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the static export
+        run: npm run build
+        env:
+          # Sub-path and origin are separate on purpose: `src/lib/site.ts`
+          # joins them, so canonicals, og:url, the sitemap and robots.txt all
+          # emit real, reachable URLs.
+          NEXT_PUBLIC_BASE_PATH: /ppc-tools-for-va
+          NEXT_PUBLIC_SITE_URL: https://projectamazonph.github.io
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          # Not affected by `defaults.run.working-directory` — this one is
+          # resolved from the repository root.
+          path: web/out
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4

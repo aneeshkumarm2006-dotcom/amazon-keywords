@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="PPC Academy">
+  <title>PPC Academy</title>
+  <defs>
+    <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14a184"/>
+      <stop offset="1" stop-color="#075f4d"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="114.5" ry="114.5" fill="url(#plate)"/>
+  <g transform="translate(97.28 97.28) scale(13.2267)" fill="none" stroke="#ffffff" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.9 18 8.2 11.1l3.7 3.3L20.1 5.4"/>
+    <path d="M15.2 5.4h4.9v4.9"/>
+  </g>
+  <circle cx="205.74" cy="244.06" r="25.79" fill="#ffffff"/>
+</svg>

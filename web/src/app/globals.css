@@ -1,0 +1,669 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * PPC Academy — design tokens
+ * Class-based dark mode. Every token has a light AND a dark value.
+ * Never hardcode a hex in a component: use the token utilities.
+ * ------------------------------------------------------------------ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+
+  /* surfaces */
+  --canvas: #fbfaf8; /* warm paper */
+  --surface: #ffffff;
+  --surface-2: #f3f1ec;
+
+  /* type */
+  --ink: #10141c; /* near-black blue */
+  --muted: #545c6b;
+  /* 4.55:1 on --surface-2, the lowest-contrast ground it ever lands on.
+     The lighter #6b7383 it replaced measured 4.22 there and failed AA. */
+  --faint: #666e7d;
+
+  /* lines */
+  --hairline: #e4e0d8;
+  --hairline-strong: #d3cec3;
+
+  /* brand — deep emerald teal */
+  --brand: #0e7c66;
+  --brand-hover: #0a6152;
+  /* Lightened from #e4f2ed so brand text on a soft brand chip clears AA
+     (4.55:1 rather than 4.45:1) — soft badges set 11px type on this. */
+  --brand-soft: #e8f4f0;
+  --on-brand: #ffffff;
+
+  /* accent — warm ember */
+  --ember: #e5641e;
+  --ember-ink: #a8420d; /* AA-safe ember for small text */
+  --ember-soft: #fdece1;
+  --on-ember: #1b0b03;
+
+  /* metric semantics */
+  --good: #0f7a55;
+  /* Lightened from #e3f3ec for the same reason as --brand-soft: the quiz
+     explanation panel puts brand and faint small text on this ground, and both
+     measured 4.47:1 there. 4.56:1 now. */
+  --good-soft: #e6f5ef;
+  --on-good: #ffffff;
+  --warn: #9a6200;
+  --warn-soft: #faf0dc;
+  --on-warn: #ffffff;
+  --bad: #c0392b;
+  --bad-soft: #fbeae7;
+  --on-bad: #ffffff;
+  --info: #1d6fa8;
+  --info-soft: #e6f0f9;
+  --on-info: #ffffff;
+
+  /* elevation */
+  --shadow-card-value: 0 1px 2px rgb(16 20 28 / 0.05), 0 10px 26px -14px rgb(16 20 28 / 0.18);
+
+  /* chrome */
+  --header-bg: rgb(251 250 248 / 0.82);
+  /* Modal scrim. Deliberately NOT built on --ink: --ink flips to near-white in
+     dark mode, so an ink-based scrim lightens the page instead of dimming it.
+     This token keeps its role — always a dim — in both themes. */
+  --scrim: rgb(16 20 28 / 0.45);
+  --selection-bg: #cfe9e0;
+  --selection-ink: #07271f;
+  --grid-line: rgb(16 20 28 / 0.045);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --canvas: #0c0f14;
+  --surface: #12161d;
+  --surface-2: #1a1f28;
+
+  --ink: #eceff4;
+  --muted: #9aa5b5;
+  --faint: #7b8799;
+
+  --hairline: #242b36;
+  --hairline-strong: #333c4a;
+
+  --brand: #2fb294;
+  --brand-hover: #46c9aa;
+  --brand-soft: #0e2a24;
+  --on-brand: #04120e;
+
+  --ember: #ff8a4c;
+  --ember-ink: #ffb088;
+  --ember-soft: #331a0d;
+  --on-ember: #0a0d12;
+
+  --good: #4ade9e;
+  --good-soft: #0d2a22;
+  --on-good: #0a0d12;
+  --warn: #e8b14a;
+  --warn-soft: #2e230d;
+  --on-warn: #0a0d12;
+  --bad: #f87362;
+  --bad-soft: #331514;
+  --on-bad: #0a0d12;
+  --info: #6bb3f2;
+  --info-soft: #0f2333;
+  --on-info: #0a0d12;
+
+  --shadow-card-value: 0 1px 2px rgb(0 0 0 / 0.5), 0 14px 34px -18px rgb(0 0 0 / 0.75);
+
+  --header-bg: rgb(12 15 20 / 0.8);
+  --scrim: rgb(0 0 0 / 0.6);
+  --selection-bg: #14463b;
+  --selection-ink: #dffaf1;
+  --grid-line: rgb(236 239 244 / 0.05);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--on-brand);
+
+  --color-ember: var(--ember);
+  --color-ember-ink: var(--ember-ink);
+  --color-ember-soft: var(--ember-soft);
+  --color-on-ember: var(--on-ember);
+
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-on-good: var(--on-good);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-on-warn: var(--on-warn);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-on-bad: var(--on-bad);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-on-info: var(--on-info);
+
+  --color-scrim: var(--scrim);
+
+  --shadow-card: var(--shadow-card-value);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--selection-bg);
+    color: var(--selection-ink);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.021em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: 0.3rem;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  .scroll-well {
+    scrollbar-width: thin;
+    scrollbar-color: var(--hairline-strong) transparent;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 100;
+    transform: translateY(-160%);
+    border-radius: 0.5rem;
+    border: 1px solid var(--hairline);
+    background-color: var(--surface);
+    color: var(--ink);
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-card-value);
+    transition: transform 140ms ease;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  /* Faint engineering grid behind hero / CTA bands. */
+  .grid-field {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center;
+  }
+
+  .hairline-rule {
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      var(--hairline-strong) 12%,
+      var(--hairline-strong) 88%,
+      transparent
+    );
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * .prose-doc — rendered markdown (SOPs, workflows, templates, career)
+ * ------------------------------------------------------------------ */
+
+.prose-doc {
+  color: var(--ink);
+  font-size: 0.9875rem;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.prose-doc > * + * {
+  margin-top: 1.05em;
+}
+
+.prose-doc h1,
+.prose-doc h2,
+.prose-doc h3,
+.prose-doc h4,
+.prose-doc h5,
+.prose-doc h6 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-doc h1 {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-top: 0;
+}
+
+.prose-doc h2 {
+  font-size: 1.3125rem;
+  line-height: 1.3;
+  font-weight: 700;
+  margin-top: 2.25em;
+  padding-top: 0.85em;
+  border-top: 1px solid var(--hairline);
+}
+
+.prose-doc h3 {
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  font-weight: 650;
+  margin-top: 1.9em;
+}
+
+.prose-doc h4 {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  margin-top: 1.6em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.prose-doc h1:first-child,
+.prose-doc h2:first-child,
+.prose-doc h3:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose-doc a {
+  color: var(--brand);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--brand) 38%, transparent);
+  text-underline-offset: 3px;
+}
+
+.prose-doc a:hover {
+  color: var(--brand-hover);
+  text-decoration-color: currentColor;
+}
+
+.prose-doc strong {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.prose-doc em {
+  font-style: italic;
+}
+
+.prose-doc ul,
+.prose-doc ol {
+  padding-left: 1.3em;
+}
+
+.prose-doc ul {
+  list-style: none;
+  padding-left: 1.15em;
+}
+
+.prose-doc ul > li {
+  position: relative;
+}
+
+.prose-doc ul > li::before {
+  content: "";
+  position: absolute;
+  left: -0.95em;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background-color: var(--brand);
+  opacity: 0.75;
+}
+
+.prose-doc ol {
+  list-style: decimal;
+}
+
+.prose-doc ol > li::marker {
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.prose-doc li + li {
+  margin-top: 0.35em;
+}
+
+.prose-doc li > ul,
+.prose-doc li > ol {
+  margin-top: 0.35em;
+}
+
+.prose-doc code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background-color: var(--surface-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0.375rem;
+  padding: 0.12em 0.36em;
+  color: var(--ember-ink);
+  overflow-wrap: anywhere;
+}
+
+.prose-doc pre {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  background-color: var(--surface-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0.75rem;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.prose-doc pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--ink);
+  font-size: inherit;
+}
+
+.prose-doc blockquote {
+  border-left: 3px solid var(--brand);
+  background-color: var(--brand-soft);
+  border-radius: 0 0.6rem 0.6rem 0;
+  padding: 0.85rem 1.1rem;
+  color: var(--ink);
+}
+
+.prose-doc blockquote > * + * {
+  margin-top: 0.6em;
+}
+
+.prose-doc hr {
+  border: 0;
+  height: 1px;
+  background-color: var(--hairline);
+  margin-block: 2.25em;
+}
+
+.prose-doc table {
+  width: 100%;
+  font-size: 0.875rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.75rem;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.prose-doc thead {
+  background-color: var(--surface-2);
+}
+
+.prose-doc th {
+  text-align: left;
+  font-weight: 650;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--hairline);
+  white-space: nowrap;
+}
+
+.prose-doc td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: top;
+}
+
+.prose-doc tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.prose-doc tbody tr:hover {
+  background-color: color-mix(in oklab, var(--surface-2) 55%, transparent);
+}
+
+.prose-doc img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--hairline);
+}
+
+.prose-doc input[type="checkbox"] {
+  accent-color: var(--brand);
+  margin-right: 0.45em;
+}
+
+.prose-doc .anchor-link {
+  color: var(--faint);
+  text-decoration: none;
+  opacity: 0;
+  margin-left: 0.4ch;
+  font-weight: 400;
+}
+
+.prose-doc h2:hover .anchor-link,
+.prose-doc h3:hover .anchor-link,
+.prose-doc .anchor-link:focus-visible {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Print
+ *
+ * Printing is a supported path here — the path certificate ships a "Print or
+ * save as PDF" button and the doc layout has deliberate print rules. But
+ * browsers drop backgrounds and keep text colours, so a dark-theme page would
+ * print near-white ink and bright accent text onto white paper.
+ *
+ * Paper is always light, so the light palette is restated here for `.dark`
+ * too. Values mirror `:root` above — change them together.
+ * ------------------------------------------------------------------ */
+
+@media print {
+  :root,
+  .dark {
+    color-scheme: light;
+
+    --canvas: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f1ec;
+
+    --ink: #10141c;
+    --muted: #545c6b;
+    --faint: #666e7d;
+
+    --hairline: #e4e0d8;
+    --hairline-strong: #d3cec3;
+
+    --brand: #0e7c66;
+    --brand-hover: #0a6152;
+    --brand-soft: #e8f4f0;
+
+    --ember: #e5641e;
+    --ember-ink: #a8420d;
+    --ember-soft: #fdece1;
+
+    --good: #0f7a55;
+    --good-soft: #e6f5ef;
+    --warn: #9a6200;
+    --warn-soft: #faf0dc;
+    --bad: #c0392b;
+    --bad-soft: #fbeae7;
+    --info: #1d6fa8;
+    --info-soft: #e6f0f9;
+
+    --header-bg: #ffffff;
+    --grid-line: rgb(16 20 28 / 0.045);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Mobile + installed-app behaviour (phase 10)
+ *
+ * Layout and overflow only — no component restyling lives here.
+ * ------------------------------------------------------------------ */
+
+@layer base {
+  /*
+   * The viewport is declared `viewport-fit=cover` so an installed app paints
+   * edge to edge, which means the horizontal safe area (the notch in
+   * landscape, the rounded corners) has to be handed back explicitly.
+   */
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /*
+   * The phone tab bar is fixed over the bottom of the page, so the document
+   * ends above it rather than underneath it. `--tab-bar-height` is 0 from the
+   * `md` breakpoint up, where the bar is not rendered.
+   */
+  :root {
+    --tab-bar-height: calc(3.5rem + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 48rem) {
+    :root {
+      --tab-bar-height: 0px;
+    }
+  }
+
+  body {
+    padding-bottom: var(--tab-bar-height);
+  }
+
+  /* Kill the double-tap-zoom delay on anything you are meant to press. */
+  a,
+  button,
+  summary,
+  [role="button"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"] {
+    touch-action: manipulation;
+  }
+
+  /*
+   * Momentum scrolling on iOS, and keep a sideways swipe inside a wide table
+   * instead of letting it trigger the browser's back gesture.
+   */
+  .overflow-x-auto,
+  .scroll-well {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .overflow-x-auto {
+    overscroll-behavior-x: contain;
+  }
+
+  /* A scroll that runs out inside a drawer, dialog or list stays there
+     instead of chaining to the document and firing pull-to-refresh. */
+  .overflow-y-auto {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Installed app: no address bar to hide and no reload affordance, so the
+     elastic document overscroll is only ever an accident. */
+  @media (display-mode: standalone), (display-mode: fullscreen) {
+    html {
+      overscroll-behavior-y: none;
+    }
+  }
+}
+
+/*
+ * Unlayered on purpose: it has to beat the `text-sm` utility. iOS Safari
+ * zooms the whole page when a focused field is under 16px, which on a 360px
+ * screen leaves the user scrolled sideways into a form they cannot see.
+ */
+@media (max-width: 47.99rem) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
