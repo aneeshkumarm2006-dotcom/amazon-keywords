@@ -4,7 +4,7 @@ An interactive Amazon PPC training platform for Filipino virtual assistants movi
 PPC specialist work. It is the [`ppc-tools-for-va`](https://github.com/projectamazonph/ppc-tools-for-va)
 toolkit — SOPs, quizzes, interview prep, case studies, templates — rebuilt as a product you
 can actually work through: graded quizzes with spaced repetition, a mock interview
-simulator, calculators that run the maths live, and a progress dashboard that keeps
+simulator, calculators that run the maths live, and a progress page that keeps
 everything in your own browser.
 
 There is no account, no server and no database. The whole site is a static export.
@@ -40,7 +40,8 @@ There is no account, no server and no database. The whole site is a static expor
 | **Calculators** | 7 tools — ACoS/ROAS, break-even ACoS, bid maths, profit margin, budget planner, keyword ROI, TACoS. Every one recalculates live, shows the formula with your numbers substituted in, and saves your inputs. |
 | **Reference** | 8 cheat sheets, a 102-term glossary with formulas and worked examples, and an automation guide covering 12 tools. |
 | **Learning paths** | 4 sequenced routes through the library, from "VA to PPC Specialist in 30 days" to "Advanced Optimization". |
-| **Dashboard** | XP, streak, topic mastery, weak areas, path progress, bookmarks and an activity feed — computed from localStorage, exportable as JSON. |
+| **Progress** | XP, streak, topic mastery, weak areas, path progress, bookmarks and an activity feed — computed from localStorage, exportable as JSON. |
+| **PPC Console** | A personal Amazon PPC console at `/dashboard`: import Search Term Reports and bulk files (CSV or XLSX), keep several stores side by side, and review harvest, negative and bid recommendations. Stored in IndexedDB in your browser, never uploaded. |
 | **Search** | Fuzzy full-text search over all 305 registered resources with facets by type, level and tag, plus a Cmd/Ctrl-K command palette. |
 
 Everything works offline once visited: the site installs as a PWA with a service worker.
@@ -164,7 +165,8 @@ See [Deployment](#deployment) for what each one reaches.
 | Route | What it is |
 |---|---|
 | `/career`, `/career/[id]` | 4 career resources. |
-| `/dashboard` | Personal progress, all from localStorage. |
+| `/progress` | Personal learning progress, all from localStorage. |
+| `/dashboard`, `/dashboard/{import,search-terms,keywords,bids,stores}` | Personal PPC console (noindex). Data lives in IndexedDB (`ppc-console`). |
 | `/search` | Faceted full-text search. |
 | `/contribute`, `/contribute/guidelines`, `/contribute/roadmap` | Guided submission forms, the content bar, and the public roadmap. |
 | `/offline` | Service-worker fallback shell and offline library. |
@@ -435,6 +437,14 @@ Two things matter on every host:
 - `public/.nojekyll` is committed and copied into `out/`. Without it GitHub Pages runs a
   Jekyll pass that strips the `_next/` directory, and the site loads with no CSS or
   JavaScript at all.
+
+`npm run build` also runs `postbuild` (`scripts/flatten-export-segments.mjs`). On Windows,
+Next 16 writes each page's segment-prefetch files into nested folders
+(`dashboard/bids/__next.dashboard/bids/__PAGE__.txt`). The client asks for the flat name
+(`__next.dashboard.bids.__PAGE__.txt`), so every `<Link>` prefetch below the root returns
+404 on a Windows-built `out/`. The script renames those files to the flat names. Linux
+builds (CI, Vercel) are already flat, so there it does nothing. Running `next build`
+directly skips this step.
 
 ### GitHub Pages — a project sub-path
 

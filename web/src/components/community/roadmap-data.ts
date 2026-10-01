@@ -323,7 +323,7 @@ export const ROADMAP: RoadmapItem[] = [
     area: "platform",
     source: "TODO.md — Low priority · KANBAN.md — To Do",
     size: "L",
-    shippedAt: { label: "Local progress works today", href: "/dashboard" },
+    shippedAt: { label: "Local progress works today", href: "/progress" },
   },
   {
     id: "video-scripts",

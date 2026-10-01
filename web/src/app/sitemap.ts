@@ -67,7 +67,7 @@ const HUB_ROUTES: HubRoute[] = [
 
   // Career and meta
   { path: "/career", priority: 0.8, changeFrequency: "monthly" },
-  { path: "/dashboard", priority: 0.4, changeFrequency: "yearly" },
+  { path: "/progress", priority: 0.4, changeFrequency: "yearly" },
   { path: "/search", priority: 0.4, changeFrequency: "yearly" },
   { path: "/contribute", priority: 0.5, changeFrequency: "monthly" },
   { path: "/contribute/guidelines", priority: 0.4, changeFrequency: "yearly" },

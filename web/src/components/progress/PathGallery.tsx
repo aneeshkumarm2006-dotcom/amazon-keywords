@@ -41,8 +41,8 @@ export function PathGallery() {
           value={formatNumber(started)}
           hint={
             started === 0
-              ? "Start one and it appears on your dashboard."
-              : "Showing on your dashboard with the next step."
+              ? "Start one and it appears on your progress page."
+              : "Showing on your progress page with the next step."
           }
           icon={Route}
           tone="info"

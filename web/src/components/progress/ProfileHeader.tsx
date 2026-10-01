@@ -116,7 +116,7 @@ export function ProfileHeader({ overview }: ProfileHeaderProps) {
                 id="profile-heading"
                 className="mt-1 text-2xl leading-tight font-bold text-ink sm:text-[1.75rem]"
               >
-                {named ? profile.displayName : "Your dashboard"}
+                {named ? profile.displayName : "Your progress"}
               </h2>
 
               <div className="mt-2.5 flex flex-wrap items-center gap-2">
@@ -150,7 +150,7 @@ export function ProfileHeader({ overview }: ProfileHeaderProps) {
                 </p>
               ) : (
                 <p className="mt-2.5 max-w-xl text-[0.8125rem] leading-relaxed text-muted">
-                  Add a name and a goal role and the dashboard starts measuring the gap
+                  Add a name and a goal role and this page starts measuring the gap
                   between where you are and the rung you are aiming at.
                 </p>
               )}

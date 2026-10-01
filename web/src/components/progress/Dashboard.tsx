@@ -93,7 +93,7 @@ const STARTER_STEPS: StarterStep[] = [
   {
     title: "Read the one SOP everyone uses daily",
     description:
-      "The 15-minute morning health check. Mark it complete at the bottom of the page and this dashboard starts tracking.",
+      "The 15-minute morning health check. Mark it complete at the bottom of the page and this page starts tracking.",
     href: "/sops/daily-health-check",
     cta: "Open the daily health check",
     icon: ClipboardList,
@@ -147,7 +147,7 @@ export function Dashboard() {
               Three ways to put the first number on this page
             </h2>
             <p className="mt-2 max-w-2xl text-[0.9375rem] leading-relaxed text-muted">
-              This dashboard reads from your own browser. No account, no sign-in, nothing sent
+              This page reads from your own browser. No account, no sign-in, nothing sent
               anywhere — which also means it stays blank until you do something. Any one of these
               takes under twenty minutes and fills in most of the panels below.
             </p>

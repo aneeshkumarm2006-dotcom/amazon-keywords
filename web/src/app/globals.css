@@ -667,3 +667,56 @@
     font-size: 16px;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * PPC console — chart series tokens (appended 2026-10-01)
+ *
+ * One colour per store (Store.colorIndex 0-5 → --series-1..6), used for the
+ * store dots in the console switcher and every per-store chart series.
+ * Hues follow the Okabe-Ito colour-blind-safe set, pulled toward the brand
+ * emerald and ember: 1 bluish green, 2 ember, 3 blue, 4 reddish purple,
+ * 5 gold, 6 violet. The first three (the usual store count) also differ in
+ * lightness, so they separate under deuteranopia/protanopia. Every value
+ * clears 3:1 (WCAG 1.4.11, graphical objects) on canvas, surface and
+ * surface-2 in its theme — lowest light 3.46 (#d0601a on surface-2), lowest
+ * dark 6.00. Colour is never the only cue: store names sit beside the dots.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --series-1: #00906a;
+  --series-2: #d0601a;
+  --series-3: #1a5fa8;
+  --series-4: #b04f8a;
+  --series-5: #9a7400;
+  --series-6: #6b4fc9;
+}
+
+.dark {
+  --series-1: #34c49a;
+  --series-2: #ff8f4d;
+  --series-3: #5fa8ff;
+  --series-4: #e27ab8;
+  --series-5: #e0b43c;
+  --series-6: #9d8cff;
+}
+
+@media print {
+  :root,
+  .dark {
+    --series-1: #00906a;
+    --series-2: #d0601a;
+    --series-3: #1a5fa8;
+    --series-4: #b04f8a;
+    --series-5: #9a7400;
+    --series-6: #6b4fc9;
+  }
+}
+
+@theme inline {
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-series-3: var(--series-3);
+  --color-series-4: var(--series-4);
+  --color-series-5: var(--series-5);
+  --color-series-6: var(--series-6);
+}

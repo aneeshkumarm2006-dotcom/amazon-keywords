@@ -20,7 +20,7 @@
  * never served next to new HTML.
  */
 
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v4";
 const SHELL_CACHE = `ppc-academy-shell-${CACHE_VERSION}`;
 const PAGES_CACHE = `ppc-academy-pages-${CACHE_VERSION}`;
 const ASSETS_CACHE = `ppc-academy-assets-${CACHE_VERSION}`;
@@ -94,6 +94,7 @@ const PRECACHE_ROUTES = [
   "/glossary/",
   "/calculators/",
   "/paths/",
+  "/progress/",
   "/dashboard/",
   "/search/",
 ].map(scoped);

@@ -273,7 +273,7 @@ export function AddToHomeScreen({ variant = "panel", className }: AddToHomeScree
                 <Smartphone className="mt-0.5 size-3.5 shrink-0 text-brand" aria-hidden="true" />
                 <span>
                   Shortcuts straight into quizzes, calculators, the daily health check SOP and
-                  this dashboard from a long-press on the icon.
+                  your progress page from a long-press on the icon.
                 </span>
               </li>
               <li className="flex items-start gap-2.5">

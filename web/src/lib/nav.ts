@@ -3,6 +3,7 @@ import {
   BookOpenCheck,
   Bot,
   Calculator,
+  CircleGauge,
   CircleUser,
   ClipboardList,
   Compass,
@@ -125,6 +126,14 @@ export const NAV: NavGroup[] = [
         description: "Tool comparison, bid rules and the automation maturity model.",
         icon: Bot,
       },
+      // PPC console — personal tool, data stays in the browser
+      {
+        label: "PPC Console",
+        href: "/dashboard",
+        description: "Upload search term reports, get harvest, negative and bid calls.",
+        icon: CircleGauge,
+        meta: "Personal",
+      },
     ],
   },
   {
@@ -172,8 +181,8 @@ export const NAV: NavGroup[] = [
         icon: GraduationCap,
       },
       {
-        label: "Dashboard",
-        href: "/dashboard",
+        label: "Progress",
+        href: "/progress",
         description: "Your quiz scores, completed SOPs and path progress.",
         icon: LayoutDashboard,
       },
@@ -317,15 +326,15 @@ export const MOBILE_TABS: MobileTab[] = [
     label: "Tools",
     href: "/calculators",
     icon: Calculator,
-    ariaLabel: "Tools — calculators, scripts and search",
-    matches: ["/calculators", "/scripts", "/search"],
+    ariaLabel: "Tools — calculators, scripts, search and the PPC console",
+    matches: ["/calculators", "/scripts", "/search", "/dashboard"],
   },
   {
     label: "Me",
-    href: "/dashboard",
+    href: "/progress",
     icon: CircleUser,
-    ariaLabel: "Me — your dashboard and progress",
-    matches: ["/dashboard", "/offline"],
+    ariaLabel: "Me — your progress and saved pages",
+    matches: ["/progress", "/offline"],
   },
 ];
 

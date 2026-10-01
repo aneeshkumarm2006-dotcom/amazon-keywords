@@ -236,7 +236,7 @@ export function DataPanel({ className }: DataPanelProps) {
                   {result.exportedAt
                     ? ` from an export taken on ${new Date(result.exportedAt).toLocaleDateString("en-GB")}`
                     : ""}
-                  . The dashboard behind this dialog has already updated.
+                  . The progress page behind this dialog has already updated.
                 </p>
               </Callout>
             ) : (

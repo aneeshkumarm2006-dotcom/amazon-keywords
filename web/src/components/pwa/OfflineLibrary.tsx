@@ -71,7 +71,8 @@ const INDEX_TITLES: Record<string, string> = {
   "/scripts": "Script library",
   "/career": "Career guide",
   "/paths": "Learning paths",
-  "/dashboard": "Your dashboard",
+  "/progress": "Your progress",
+  "/dashboard": "PPC console",
   "/search": "Search",
   "/contribute": "Contribute",
   "/contribute/guidelines": "Contribution guidelines",
@@ -309,7 +310,7 @@ export function OfflineLibrary() {
         <EmptyState
           icon={CloudDownload}
           title="Nothing is saved on this device yet"
-          description="The service worker saves each page as you open it, and pre-saves the quizzes, SOP index, cheat sheets, glossary, calculators and dashboard on your first visit. Reconnect, open a few pages, and they will be listed here."
+          description="The service worker saves each page as you open it, and pre-saves the quizzes, SOP index, cheat sheets, glossary, calculators and your progress page on your first visit. Reconnect, open a few pages, and they will be listed here."
           action={
             <>
               <ButtonLink href="/">Back to the home page</ButtonLink>

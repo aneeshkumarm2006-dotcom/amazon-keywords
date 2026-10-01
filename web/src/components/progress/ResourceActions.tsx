@@ -124,7 +124,7 @@ export function ResourceActions({
           {doneAt ? (
             <>
               <Sparkles className="size-3.5 shrink-0 text-good" aria-hidden="true" />
-              <span>Completed {formatDate(toIsoDay(doneAt))} · counted on your dashboard</span>
+              <span>Completed {formatDate(toIsoDay(doneAt))} · counted on your progress page</span>
             </>
           ) : (
             <span>Progress is saved in this browser only. Nothing is uploaded.</span>

@@ -15,7 +15,7 @@ export interface PathsPanelProps {
 }
 
 /**
- * Learning paths on the dashboard.
+ * Learning paths on the progress page.
  *
  * Started paths come first with their next step; unstarted ones are listed
  * underneath as suggestions rather than hidden, because "nothing in progress"

@@ -118,9 +118,18 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: SHORTCUT_ICON,
       },
       {
-        name: "My dashboard",
-        short_name: "Dashboard",
+        name: "My progress",
+        short_name: "Progress",
         description: "Quiz scores, streak, weak areas and path progress.",
+        url: withBasePath("/progress/"),
+        icons: SHORTCUT_ICON,
+      },
+      // Last on purpose: launchers that cap the list (Android shows four)
+      // drop from the end, and the learner shortcuts come first.
+      {
+        name: "PPC console",
+        short_name: "Console",
+        description: "Import search term reports and review harvest, negative and bid calls.",
         url: withBasePath("/dashboard/"),
         icons: SHORTCUT_ICON,
       },

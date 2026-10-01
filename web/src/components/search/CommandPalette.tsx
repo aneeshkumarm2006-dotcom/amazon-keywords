@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CircleGauge,
   CornerDownLeft,
   History,
   Home,
@@ -281,11 +282,19 @@ export function CommandPalette() {
         run: () => go("/quizzes"),
       },
       {
-        id: "action-dashboard",
-        label: "Open dashboard",
+        id: "action-progress",
+        label: "Open progress",
         description: "Quiz scores, finished SOPs and path progress",
         icon: LayoutDashboard,
-        keywords: "progress stats history saved",
+        keywords: "progress dashboard stats history saved xp streak",
+        run: () => go("/progress"),
+      },
+      {
+        id: "action-console",
+        label: "Open PPC console",
+        description: "Import reports, then review harvests, negatives and bids",
+        icon: CircleGauge,
+        keywords: "console dashboard search term report bulk file harvest negative bid import store",
         run: () => go("/dashboard"),
       },
     ];

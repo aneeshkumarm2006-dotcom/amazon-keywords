@@ -187,3 +187,77 @@ faithfully; do not invent contradicting numbers. When a phase asks you to *expan
 (more case studies, more interview questions), keep the same voice, realism, and level of
 numeric detail: real ACoS/ROAS/CPC figures that are internally consistent and
 arithmetically correct. Audience: Filipino VAs, English, practical, no fluff, no hype.
+
+---
+
+# PPC Console (`/dashboard`) — conventions (added 2026-09-30)
+
+`/dashboard` is no longer the learner-progress page. It is a **personal Amazon PPC console**:
+upload Search Term Reports and bulk files, get harvest / negative / bid recommendations, export
+Amazon bulk sheets, and see multiple stores on one dashboard. No login. Learner progress moved
+to `/progress` (same `components/progress/Dashboard.tsx`).
+
+## Rules that override the academy rules above
+- **Persistence is IndexedDB**, database `ppc-console`, via `src/lib/ppc/db.ts` only. Reports can
+  be 100k rows, far beyond localStorage. Nothing is uploaded anywhere; there is still no backend.
+  Never store console data under the `ppc-academy:` localStorage prefix (progress Export/Reset
+  wipes that namespace).
+- Still static export, still **no new npm dependencies**: CSV and XLSX are parsed/written by our
+  own code in `src/lib/ppc/` (zip via `DecompressionStream("deflate-raw")`, STORED zip + CRC32 for
+  writing, XML by string scanning — no `DOMParser`, so the engine also runs under Node).
+- `src/lib/ppc/*` is a **pure engine**: no React, no `@/` path aliases (relative imports only),
+  no browser globals at module top level, so `npx jiti scripts/ppc-selftest.ts` can run it.
+  The only browser-bound module is `db.ts` (guard every `indexedDB` access).
+- **Types live in `src/lib/ppc/types.ts`** — build against them; extend with optional fields,
+  never reshape. Money is in the store's currency; rates are ratios (0.3 = 30%).
+- `/dashboard/**` pages set `noindex: true` in `pageMetadata`.
+
+## Ownership
+| Area | Files |
+|---|---|
+| Engine | `src/lib/ppc/*`, `scripts/ppc-*` |
+| Console UI | `src/components/ppc/*`, `src/app/dashboard/**` |
+| Progress move | `src/app/progress/**` + the link/nav/SW/manifest edits listed in the plan |
+| Chart series tokens | `--series-1..6` in `globals.css` (light + dark), append only |
+
+Routes: `/dashboard` (overview), `/dashboard/import`, `/dashboard/search-terms`,
+`/dashboard/keywords` (recommendations), `/dashboard/bids`, `/dashboard/stores`.
+
+## Report columns (header aliases, matched after NFKD + dropping accents, lower-casing and stripping everything but letters / digits of any script; localised DE / FR / IT / ES / JP console headers are accepted after the English ones)
+Search Term Report (console): Date | Start Date + End Date, Portfolio name, Currency, Campaign Name,
+Ad Group Name, Targeting, Match Type, Customer Search Term, Impressions, Clicks, Spend (or Cost),
+`N Day Total Sales`, `N Day Total Orders (#)`, `N Day Total Units (#)` (N = 7 SP, 14 SB).
+Ads API v3 names also accepted: campaignName, adGroupName, targeting/keyword, matchType, searchTerm,
+impressions, clicks, cost, sales7d/sales14d, purchases7d/purchases14d, unitsSoldClicks7d.
+Bulk file: the "Sponsored Products Campaigns" sheet — Product, Entity, Operation, Campaign ID,
+Ad Group ID, Ad ID, Keyword ID, Product Targeting ID, Campaign Name (Informational only),
+Ad Group Name (Informational only), State, Targeting Type, Daily Budget, Ad Group Default Bid,
+Bid, Keyword Text, Match Type, Product Targeting Expression, SKU, ASIN.
+
+## Rule defaults (source: SOP-02/03, Workflow 2, Template 2, Bid-Calculator.xlsx)
+Window 30 days, last 2 excluded; evaluate ≥ 5 clicks. Harvest exact: ≥ 2 orders and ACoS < target
+(ASIN terms → product targeting); skip if already targeted; paired negative exact in source ad
+group. Harvest bid = target ACoS × AOV × smoothed CVR × 0.80 × match multiplier (1 / 0.85 / 0.70 /
+0.60); smoothed CVR = (orders + 15 × ad-group CVR) ÷ (clicks + 15). Negate exact: 0 orders, ≥ 15
+clicks. Negate phrase: irrelevant word (word-boundary match). Converting but expensive: ACoS
+2–3× break-even → bid cut; > 3× with ≥ 10 clicks → negative exact (medium). Bid ladder on ACoS ÷
+target: < 0.5 +15%, ≤ 0.8 +8%, ≤ 1.2 hold, ≤ 1.5 −12%, ≤ 2 −20%, > 2 −20% + pause flag; max move
+±20%; raises need ≥ 3 orders; ≥ 14 days history (inclusive); never above max CPC; floor 0.30 / ceiling 5.00
+(USD-scale: new stores get them in their currency, e.g. JPY 10 / 750, INR 1 / 300, MXN 1 / 100; JPY bids are whole
+yen); floor / ceiling never override max move or max CPC.
+Starved winner: CVR ≥ 10%, ≥ 2 orders, ACoS < target, impressions < store median → +20%.
+Relevance: ≥ 1,000 impressions and CTR < 0.2%. Most destructive action wins; never negate a term
+that converts elsewhere in the store; brand/competitor terms are never negated.
+
+## Data semantics (db.ts / metrics.ts / work/decisions.ts)
+- One series per search term: overlapping imports are never added together. `resolveOverlaps` (on every
+  db read and inside `recommend`) lets daily rows win for the days they cover and the latest of
+  overlapping summary periods win; stored rows are untouched.
+- A row remembers every import that holds it (`SearchTermRow.versions`, capped at 12). Deleting an import
+  restores the previous import's numbers for rows it changed and deletes only rows no other import holds.
+- The "Current" bulk snapshot is the batch that still owns entities (`liveBulkBatches`), not the newest
+  bulk batch in the history.
+- Decisions carry the rec they were made for (`Decision.basis`). A target-level decision reopens once a
+  bulk file shows a different current bid; applied / rejected ones also after 14 more days of data. A
+  companion whose harvest link changed reopens. Approved changes whose rec is gone are listed for discard.
+- Decision writes go through `applyDecisionChanges` (one transaction); the store switcher scope is per tab.

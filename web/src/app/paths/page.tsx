@@ -17,7 +17,7 @@ import type { Tone } from "@/types/content";
 export const metadata = pageMetadata({
   title: "Learning paths",
   description:
-    "Four guided routes through PPC Academy: VA to PPC Specialist in 30 days, Interview Ready in 2 weeks, the Daily Operator Playbook, and Advanced Optimization. Every step links to a real resource and ticks off against your dashboard.",
+    "Four guided routes through PPC Academy: VA to PPC Specialist in 30 days, Interview Ready in 2 weeks, the Daily Operator Playbook, and Advanced Optimization. Every step links to a real resource and ticks off against your progress page.",
   path: "/paths",
   keywords: [
     "Amazon PPC learning path",
@@ -36,7 +36,7 @@ const HOW_IT_WORKS: { title: string; body: string; icon: typeof Layers; tone: To
   },
   {
     title: "One tick, counted once",
-    body: "Marking a step complete marks the resource complete everywhere — on its own page, on your dashboard, and in any other path that uses it. Nothing is double-counted.",
+    body: "Marking a step complete marks the resource complete everywhere — on its own page, on your progress page, and in any other path that uses it. Nothing is double-counted.",
     icon: ListChecks,
     tone: "info",
   },
@@ -122,10 +122,10 @@ export default function PathsPage() {
           <p className="mt-5 text-[0.875rem] text-muted">
             Progress lives in this browser only.{" "}
             <Link
-              href="/dashboard"
+              href="/progress"
               className="inline-flex items-center gap-1 font-medium text-brand underline decoration-hairline-strong underline-offset-2 hover:text-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
-              Your dashboard
+              Your progress page
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>{" "}
             has the export button if you move machines.
